@@ -3,8 +3,8 @@ package ru.eninja.piaps.domain;
 import javax.persistence.*;
 import java.sql.Date;
 
-
 @Entity
+@Table(name = "`student`")
 public class Student {
     private Integer id;
     private String firstName;
@@ -13,7 +13,7 @@ public class Student {
     private Group groupByGroupId;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;
     }
@@ -23,7 +23,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -33,7 +33,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     public String getLastName() {
         return lastName;
     }
@@ -43,22 +43,13 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = true)
     public Date getBirthDate() {
         return birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-    }
-    @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
-    public Group getGroupByGroupId() {
-        return groupByGroupId;
-    }
-
-    public void setGroupByGroupId(Group groupByGroupId) {
-        this.groupByGroupId = groupByGroupId;
     }
 
     @Override
@@ -85,4 +76,13 @@ public class Student {
         return result;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
+    public Group getGroupByGroupId() {
+        return groupByGroupId;
+    }
+
+    public void setGroupByGroupId(Group groupByGroupId) {
+        this.groupByGroupId = groupByGroupId;
+    }
 }

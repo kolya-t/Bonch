@@ -3,8 +3,8 @@ package ru.eninja.piaps.domain;
 import javax.persistence.*;
 import java.util.Collection;
 
-
 @Entity
+@Table(name = "`specialty`")
 public class Specialty {
     private String id;
     private String name;
@@ -12,7 +12,7 @@ public class Specialty {
     private Faculty facultyByFacultyId;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public String getId() {
         return id;
     }
@@ -22,32 +22,13 @@ public class Specialty {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToMany(mappedBy = "specialtyBySpecialtyId")
-    public Collection<Group> getGroupsById() {
-        return groupsById;
-    }
-
-    public void setGroupsById(Collection<Group> groupsById) {
-        this.groupsById = groupsById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "faculty_id", referencedColumnName = "id", nullable = false)
-    public Faculty getFacultyByFacultyId() {
-        return facultyByFacultyId;
-    }
-
-    public void setFacultyByFacultyId(Faculty facultyByFacultyId) {
-        this.facultyByFacultyId = facultyByFacultyId;
     }
 
     @Override
@@ -70,4 +51,22 @@ public class Specialty {
         return result;
     }
 
+    @OneToMany(mappedBy = "specialtyBySpecialtyId")
+    public Collection<Group> getGroupsById() {
+        return groupsById;
+    }
+
+    public void setGroupsById(Collection<Group> groupsById) {
+        this.groupsById = groupsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id", referencedColumnName = "id", nullable = false)
+    public Faculty getFacultyByFacultyId() {
+        return facultyByFacultyId;
+    }
+
+    public void setFacultyByFacultyId(Faculty facultyByFacultyId) {
+        this.facultyByFacultyId = facultyByFacultyId;
+    }
 }

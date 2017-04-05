@@ -59,15 +59,13 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     @Bean(name = "entityManagerFactory")
-    LocalContainerEntityManagerFactoryBean getEntityManagerFactory(DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory =
-                new LocalContainerEntityManagerFactoryBean();
+    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaDialect(new HibernateJpaDialect());
-        entityManagerFactory.setPackagesToScan(env.getRequiredProperty(
-                "packages_to_scan.entities"));
+        entityManagerFactory.setPackagesToScan(env.getRequiredProperty("packages_to_scan.entities"));
         entityManagerFactory.setJpaProperties(getHibernateProperties());
 
         return entityManagerFactory;
@@ -89,6 +87,20 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     @Bean(name = "exceptionTranslation")
     public PersistenceExceptionTranslationPostProcessor getExceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    private Properties getHibernateProperties() {
+        Properties properties = new Properties();
+
+        for (String propertyName : new String[]{
+                "hibernate.show_sql",
+                "hibernate.dialect",
+                "hibernate.hbm2ddl.auto",
+        }) {
+            properties.put(propertyName, env.getProperty(propertyName));
+        }
+
+        return properties;
     }
 
     @Bean(name = "templateResolver")
@@ -125,24 +137,9 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    private Properties getHibernateProperties() {
-        Properties properties = new Properties();
-
-        for (String propertyName : new String[]{
-                "hibernate.show_sql",
-                "hibernate.dialect",
-                "hibernate.hbm2ddl.auto",
-        }) {
-            properties.put(propertyName, env.getProperty(propertyName));
-        }
-
-        return properties;
-    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler(env.getProperty("resource.handlers", "/static/**").split(","))
+        registry.addResourceHandler(env.getProperty("resource.handlers", "/static/**").split(","))
                 .addResourceLocations(env.getProperty("resource.locations", "/static/").split(","));
     }
 }

@@ -3,15 +3,15 @@ package ru.eninja.piaps.domain;
 import javax.persistence.*;
 import java.util.Collection;
 
-
 @Entity
+@Table(name = "`faculty`")
 public class Faculty {
     private Integer id;
     private String name;
     private Collection<Specialty> specialtiesById;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;
     }
@@ -21,22 +21,13 @@ public class Faculty {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToMany(mappedBy = "facultyByFacultyId")
-    public Collection<Specialty> getSpecialtiesById() {
-        return specialtiesById;
-    }
-
-    public void setSpecialtiesById(Collection<Specialty> specialtiesById) {
-        this.specialtiesById = specialtiesById;
     }
 
     @Override
@@ -59,4 +50,12 @@ public class Faculty {
         return result;
     }
 
+    @OneToMany(mappedBy = "facultyByFacultyId")
+    public Collection<Specialty> getSpecialtiesById() {
+        return specialtiesById;
+    }
+
+    public void setSpecialtiesById(Collection<Specialty> specialtiesById) {
+        this.specialtiesById = specialtiesById;
+    }
 }

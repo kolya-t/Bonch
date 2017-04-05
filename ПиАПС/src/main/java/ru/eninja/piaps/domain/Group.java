@@ -5,6 +5,7 @@ import java.util.Collection;
 
 
 @Entity
+@Table(name = "`group`")
 public class Group {
     private String id;
     private Integer course;
@@ -12,7 +13,7 @@ public class Group {
     private Collection<Student> studentsById;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, length = 45)
     public String getId() {
         return id;
     }
@@ -22,32 +23,13 @@ public class Group {
     }
 
     @Basic
-    @Column(name = "course")
+    @Column(name = "course", nullable = false)
     public Integer getCourse() {
         return course;
     }
 
     public void setCourse(Integer course) {
         this.course = course;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "specialty_id", referencedColumnName = "id", nullable = false)
-    public Specialty getSpecialtyBySpecialtyId() {
-        return specialtyBySpecialtyId;
-    }
-
-    public void setSpecialtyBySpecialtyId(Specialty specialtyBySpecialtyId) {
-        this.specialtyBySpecialtyId = specialtyBySpecialtyId;
-    }
-
-    @OneToMany(mappedBy = "groupByGroupId")
-    public Collection<Student> getStudentsById() {
-        return studentsById;
-    }
-
-    public void setStudentsById(Collection<Student> studentsById) {
-        this.studentsById = studentsById;
     }
 
     @Override
@@ -68,5 +50,24 @@ public class Group {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (course != null ? course.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "specialty_id", referencedColumnName = "id", nullable = false)
+    public Specialty getSpecialtyBySpecialtyId() {
+        return specialtyBySpecialtyId;
+    }
+
+    public void setSpecialtyBySpecialtyId(Specialty specialtyBySpecialtyId) {
+        this.specialtyBySpecialtyId = specialtyBySpecialtyId;
+    }
+
+    @OneToMany(mappedBy = "groupByGroupId")
+    public Collection<Student> getStudentsById() {
+        return studentsById;
+    }
+
+    public void setStudentsById(Collection<Student> studentsById) {
+        this.studentsById = studentsById;
     }
 }
