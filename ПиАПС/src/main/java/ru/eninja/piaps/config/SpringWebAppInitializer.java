@@ -8,11 +8,28 @@ import ru.eninja.piaps.config.spring.ApplicationContextConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * This class performs the function of `web.xml`.
  */
 public class SpringWebAppInitializer implements WebApplicationInitializer {
+
+    private String springActiveProfiles;
+
+    public SpringWebAppInitializer() {
+        Properties properties = new Properties();
+
+        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("app.properties")) {
+            properties.load(resourceAsStream);
+            springActiveProfiles = properties.getProperty("spring.profiles.active");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
@@ -27,5 +44,6 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
 
         dispatcherServlet.setLoadOnStartup(1);
         dispatcherServlet.addMapping("/");
+        dispatcherServlet.setInitParameter("spring.profiles.active", springActiveProfiles);
     }
 }
