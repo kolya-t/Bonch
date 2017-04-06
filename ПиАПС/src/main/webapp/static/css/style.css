@@ -1,0 +1,20 @@
+table.table thead .sorted:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+table.table thead .sorted.sorted-desc:after {
+    content: "\e156";
+}
+
+table.table thead .sorted.sorted-asc:after {
+    content: "\e155";
+}
