@@ -1,0 +1,68 @@
+package ru.eninja.piaps.config.spring;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+
+
+@Configuration
+@EnableWebMvc
+public class ThymeleafConfig extends WebMvcConfigurerAdapter {
+
+    private Environment env;
+
+    @Autowired
+    public void setEnv(Environment env) {
+        this.env = env;
+    }
+
+    @Bean(name = "templateResolver")
+    public ITemplateResolver getTemplateResolver() {
+        SpringResourceTemplateResolver resolver =
+                new SpringResourceTemplateResolver();
+
+        resolver.setPrefix(env.getRequiredProperty("template_resolver.prefix"));
+        resolver.setSuffix(env.getRequiredProperty("template_resolver.suffix"));
+        resolver.setTemplateMode(
+                env.getProperty("template_resolver.template_mode", "HTML5"));
+
+        resolver.setCharacterEncoding("UTF-8");
+
+        return resolver;
+    }
+
+    @Bean(name = "templateEngine")
+    public TemplateEngine getTemplateEngine() {
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+
+        engine.setTemplateResolver(getTemplateResolver());
+
+        return engine;
+    }
+
+    @Bean(name = "viewResolver")
+    public ViewResolver getViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+
+        resolver.setTemplateEngine(getTemplateEngine());
+        resolver.setCharacterEncoding("UTF-8");
+
+        return resolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(env.getProperty("resource.handlers", "/static/**").split(","))
+                .addResourceLocations(env.getProperty("resource.locations", "/static/").split(","));
+    }
+}
