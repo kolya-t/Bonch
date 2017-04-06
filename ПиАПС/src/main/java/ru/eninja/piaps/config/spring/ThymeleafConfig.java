@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.dialect.springdata.SpringDataDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -46,6 +47,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter {
         SpringTemplateEngine engine = new SpringTemplateEngine();
 
         engine.setTemplateResolver(getTemplateResolver());
+        engine.addDialect(new SpringDataDialect());
 
         return engine;
     }
@@ -62,7 +64,16 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(env.getProperty("resource.handlers", "/static/**").split(","))
-                .addResourceLocations(env.getProperty("resource.locations", "/static/").split(","));
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("/static/js/")
+                .addResourceLocations("/static/node_modules/jquery/dist/")
+                .addResourceLocations("/static/node_modules/bootstrap/dist/js/")
+                .addResourceLocations("/static/node_modules/bootstrap-select/dist/js/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("/static/css/")
+                .addResourceLocations("/static/node_modules/bootstrap/dist/css/")
+                .addResourceLocations("/static/node_modules/bootstrap-select/dist/css/");
+        registry.addResourceHandler("/fonts/**")
+                .addResourceLocations("/static/node_modules/bootstrap/dist/fonts/");
     }
 }
