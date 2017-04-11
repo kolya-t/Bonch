@@ -11,21 +11,45 @@
           th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../../../static/css/style.css"
           th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="../../../static/node_modules/bootstrap-select/dist/css/bootstrap-select.css"
+          th:href="@{/css/bootstrap-select.min.css}"/>
 </head>
 <body>
 <div class="container">
     <h1>Список студентов</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="field_picker">Фильтровать по:</label>
+                    <select name="filterFields" id="field_picker" class="selectpicker" multiple="multiple"
+                            data-actions-box="true" data-none-selected-text="Выберите поля"
+                            data-select-all-text="Выбрать всё" data-deselect-all-text="Отменить всё">
+                        <!--/*@thymesVar id="filterFields" type="java.util.List<java.lang.String>"*/-->
+                        <option th:each="field : ${T(ru.eninja.piaps.web.StudentController).FIELD_TO_NAME_MAP}"
+                                th:value="${field.key}" th:text="${field.value}"
+                                th:selected="${filterFields != null ? filterFields.contains(field.key) : false}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filter">Слово для поиска:</label>
+                    <!--/*@thymesVar id="filterWord" type="java.lang.String"*/-->
+                    <input type="text" id="filter" name="filterWord" class="form-control" th:value="${filterWord}"/>
+                </div>
+                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-filter"></i> Фильтровать
+                </button>
+            </form>
+        </div>
+    </div>
+
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th><a class="sorted" sd:pagination-sort="id">Номер зачётки </a></th>
-            <th><a class="sorted" sd:pagination-sort="lastName">Фамилия </a></th>
-            <th><a class="sorted" sd:pagination-sort="firstName">Имя </a></th>
-            <th><a class="sorted" sd:pagination-sort="birthDate">Дата рождения </a></th>
-            <th><a class="sorted" sd:pagination-sort="groupByGroupId.id">Группа </a></th>
-            <th><a class="sorted" sd:pagination-sort="groupByGroupId.course">Курс </a></th>
-            <th><a class="sorted" sd:pagination-sort="groupByGroupId.specialtyBySpecialtyId.id">Специальность </a></th>
-            <th><a class="sorted" sd:pagination-sort="groupByGroupId.specialtyBySpecialtyId.facultyByFacultyId.name">Факультет </a>
+            <th th:each="field : ${T(ru.eninja.piaps.web.StudentController).FIELD_TO_NAME_MAP}">
+                <a class="sorted" th:sd-pagination-sort="${field.key + ' '}" th:text="${field.value + ' '}">
+                    Номер зачётки
+                </a>
             </th>
             <th></th>
         </tr>
@@ -33,46 +57,55 @@
         <tbody>
         <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<ru.eninja.piaps.domain.Student>"*/-->
         <tr th:each="student : ${page}">
-            <td th:text="${student.id}"></td>
-            <td th:text="${student.lastName}"></td>
-            <td th:text="${student.firstName}"></td>
-            <td th:text="${student.birthDate}"></td>
-            <td th:text="${student.groupByGroupId.id}"></td>
-            <td th:text="${student.groupByGroupId.course}"></td>
-            <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.id}"></td>
-            <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.facultyByFacultyId.name}"></td>
-            <td><a href="#">Edit</a></td>
+            <td th:text="${student.id}">123</td>
+            <td th:text="${student.lastName}">Пупкин</td>
+            <td th:text="${student.firstName}">Василий</td>
+            <td th:text="${student.birthDate}">1996-01-01</td>
+            <td th:text="${student.groupByGroupId.id}">ИКПИ-44</td>
+            <td th:text="${student.groupByGroupId.course}">3</td>
+            <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.id}">09.03.04</td>
+            <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.facultyByFacultyId.name}">ИКСС</td>
+            <td class="text-right">
+                <a class="text-warning" href="#">
+                    <i class="glyphicon glyphicon-pencil"></i> Изменить
+                </a>
+                <a class="text-danger" href="#">
+                    <i class="glyphicon glyphicon-remove"></i> Удалить
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <div class="row">
-        <div class="col-sm-6">
-            Показывать <div class="btn-group dropup" sd:page-size-selector="dropdown"></div> записей
-            <div sd:pagination-summary="">info</div>
-        </div>
-        <div class="col-sm-6">
-            <nav class="pull-right">
-                <ul class="pagination" sd:pagination="full">
-                    <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
-                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                    </li>
-                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                </ul>
-            </nav>
+
+    <div class="panel panel-default">
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    Показывать
+                    <div class="btn-group dropup" sd:page-size-selector="dropdown"></div>
+                    записей
+                    <div sd:pagination-summary="">info</div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination" sd:pagination="full">
+                            <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                            <li class="disabled">
+                                <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                            </li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
-    <!--<div>-->
-    <!--<span sd:pagination-summary="compact">info</span>-->
-    <!--<div class="btn-group pager-compact" sd:pagination="compact-pager">-->
-    <!--&lt;!&ndash; Pagination created by SpringDataDialect, this content is just for mockup &ndash;&gt;-->
-    <!--<a href="#" class="btn btn-default disabled"><span class="glyphicon glyphicon-chevron-left"></span></a>-->
-    <!--<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></a>-->
-    <!--</div>-->
-    <!--</div>-->
 </div>
 
 <script src="../../../static/node_modules/jquery/dist/jquery.js" th:src="@{/js/jquery.min.js}"></script>
 <script src="../../../static/node_modules/bootstrap/dist/js/bootstrap.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../../static/node_modules/bootstrap-select/dist/js/bootstrap-select.js"
+        th:src="@{/js/bootstrap-select.min.js}"></script>
 </body>
 </html>
