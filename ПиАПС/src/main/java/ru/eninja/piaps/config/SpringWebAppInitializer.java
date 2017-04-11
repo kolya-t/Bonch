@@ -4,11 +4,12 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import ru.eninja.piaps.config.spring.ApplicationContextConfig;
+import ru.eninja.piaps.config.spring.PersistenceConfig;
+import ru.eninja.piaps.config.spring.ThymeleafConfig;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -37,7 +38,7 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext rootContext =
                 new AnnotationConfigWebApplicationContext();
 
-        rootContext.register(ApplicationContextConfig.class);
+        rootContext.register(ApplicationContextConfig.class, PersistenceConfig.class, ThymeleafConfig.class);
 
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet(
                 "SpringDispatcher", new DispatcherServlet(rootContext));
