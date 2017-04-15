@@ -77,6 +77,7 @@ public class PersistenceConfig {
                 "hibernate.show_sql",
                 "hibernate.dialect",
                 "hibernate.hbm2ddl.auto",
+                "hibernate.enable_lazy_load_no_trans"
         }) {
             properties.put(propertyName, env.getProperty(propertyName));
         }
