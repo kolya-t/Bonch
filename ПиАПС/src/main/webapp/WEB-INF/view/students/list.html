@@ -66,12 +66,18 @@
             <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.id}">09.03.04</td>
             <td th:text="${student.groupByGroupId.specialtyBySpecialtyId.facultyByFacultyId.name}">ИКСС</td>
             <td class="text-right">
-                <a class="text-warning" href="#">
-                    <i class="glyphicon glyphicon-pencil"></i> Изменить
-                </a>
-                <a class="text-danger" href="#">
-                    <i class="glyphicon glyphicon-remove"></i> Удалить
-                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-default" href="#">
+                        <span class="text-warning">
+                            <i class="glyphicon glyphicon-pencil"></i> Изменить
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" href="#">
+                        <span class="text-danger">
+                            <i class="glyphicon glyphicon-remove"></i> Удалить
+                        </span>
+                    </button>
+                </div>
             </td>
         </tr>
         </tbody>
