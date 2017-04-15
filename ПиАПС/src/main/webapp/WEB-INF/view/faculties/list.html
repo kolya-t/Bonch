@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport"
@@ -37,8 +37,10 @@
                                 <span th:text="${group.id}">ИКВТ-31</span>
                             </a>
                             <div id="item-0-0-0" class="list-group collapse" th:id="${groupLink}">
-                                <a href="#" class="list-group-item" th:each="student : ${group.studentsById}"
-                                   th:text="${student.lastName + ' ' + student.firstName}">Иванов</a>
+                                <a href="../students/student.html" class="list-group-item"
+                                   th:each="student : ${group.studentsById}"
+                                   th:text="${student.lastName + ' ' + student.firstName}"
+                                   th:href="@{/students/{id}(id=${student.id})}">Иванов</a>
                             </div>
                         </div>
                     </div>
