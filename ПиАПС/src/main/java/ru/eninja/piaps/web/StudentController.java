@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,4 +66,9 @@ public class StudentController {
         return "students/list";
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getStudent(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("student", studentDao.findOne(id));
+        return "students/student";
+    }
 }
