@@ -14,8 +14,8 @@
 <body>
 <div class="container">
     <div class="list-group list-group-root well">
-        <!--/*@thymesVar id="faculties" type="org.springframework.data.domain.Page<ru.eninja.piaps.domain.Faculty>"*/-->
-        <div th:each="faculty : ${faculties}" th:with="facultyLink=${'item-' + facultyStat.index}">
+        <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<ru.eninja.piaps.domain.Faculty>"*/-->
+        <div th:each="faculty : ${page}" th:with="facultyLink=${'item-' + facultyStat.index}">
             <a href="#item-0" class="list-group-item" data-toggle="collapse" th:href="${'#' + facultyLink}">
                 <i class="glyphicon glyphicon-chevron-right"></i><span th:text="${faculty.name}">РТС</span>
             </a>

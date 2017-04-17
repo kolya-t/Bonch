@@ -62,7 +62,7 @@ public class FacultyController {
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     public String showFacultiesTree(Model model, Pageable pageable) {
         Page<Faculty> page = facultyDao.findAll(pageable);
-        model.addAttribute("faculties", page);
+        model.addAttribute("page", page);
         return "faculties/tree";
     }
 }

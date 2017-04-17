@@ -47,9 +47,7 @@
         <thead>
         <tr>
             <th th:each="field : ${T(ru.eninja.piaps.web.FacultyController).FIELD_TO_NAME_MAP}">
-                <a class="sorted" th:sd-pagination-sort="${field.key + ' '}" th:text="${field.value + ' '}">
-                    ID
-                </a>
+                <a class="sorted" th:sd:pagination-sort="${field.key}" th:text="${field.value + ' '}">ID</a>
             </th>
             <th></th>
         </tr>
@@ -76,7 +74,6 @@
         </tr>
         </tbody>
     </table>
-
 
     <div class="panel panel-default">
         <div class="panel-footer">
