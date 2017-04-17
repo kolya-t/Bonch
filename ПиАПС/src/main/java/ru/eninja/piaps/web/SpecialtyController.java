@@ -23,7 +23,7 @@ import java.util.Map;
 public class SpecialtyController {
 
     public static final Map<String, String> FIELD_TO_NAME_MAP = new LinkedHashMap<String, String>() {{
-        put("id", "Номер");
+        put("id", "№ специальности");
         put("name", "Название специальности");
         put("facultyByFacultyId.name", "Факультет");
     }};

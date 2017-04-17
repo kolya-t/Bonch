@@ -24,7 +24,7 @@ import java.util.Map;
 public class StudentController {
 
     public static final Map<String, String> FIELD_TO_NAME_MAP = new LinkedHashMap<String, String>() {{
-        put("id", "Номер зачётки");
+        put("id", "№ зачётки");
         put("lastName", "Фамилия");
         put("firstName", "Имя");
         put("birthDate", "Дата рождения");
