@@ -6,12 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.eninja.piaps.util.specifications.StudentSpecification;
 import ru.eninja.piaps.dao.StudentDao;
 import ru.eninja.piaps.domain.Student;
+import ru.eninja.piaps.util.specifications.Filter;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class StudentController {
         this.studentDao = studentDao;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.GET, params = {"filterFields", "filterWord"})
     public String getAllStudents(Model model,
                                  @SortDefault("lastName") Pageable pageable,
@@ -50,19 +52,24 @@ public class StudentController {
             return getAllStudents(model, pageable);
         }
 
-        Page<Student> page = studentDao.findAll(new StudentSpecification(filterFields, filterWord), pageable);
+        Page page = studentDao.findAll(new Filter(filterFields, filterWord), pageable);
         model.addAttribute("page", page);
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "students/list";
+        return "students/table";
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String getAllStudents(Model model, @SortDefault("lastName") Pageable pageable) {
         Page<Student> page = studentDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "students/list";
+        return "students/table";
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getStudent(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("student", studentDao.findOne(id));
+        return "students/student";
+    }
 }
