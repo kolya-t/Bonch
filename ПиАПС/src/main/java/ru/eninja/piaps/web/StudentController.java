@@ -57,14 +57,14 @@ public class StudentController {
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "students/list";
+        return "students/table";
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String getAllStudents(Model model, @SortDefault("lastName") Pageable pageable) {
         Page<Student> page = studentDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "students/list";
+        return "students/table";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
