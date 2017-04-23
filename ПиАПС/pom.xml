@@ -33,8 +33,8 @@
         <!-- Hibernate -->
         <hibernate-core.version>5.2.6.Final</hibernate-core.version>
 
-        <!--Logging-->
-        <log4j.version>1.7.21</log4j.version>
+        <!--Jackson JSON-->
+        <jackson.version>2.8.7</jackson.version>
 
         <!-- Plugins -->
         <jdk.version>1.8</jdk.version>
@@ -207,11 +207,11 @@
             <version>${hibernate-core.version}</version>
         </dependency>
 
-        <!--Logging-->
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-log4j12</artifactId>-->
-            <!--<version>${log4j.version}</version>-->
-        <!--</dependency>-->
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
     </dependencies>
 </project>
