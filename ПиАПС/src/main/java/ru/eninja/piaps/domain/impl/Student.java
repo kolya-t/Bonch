@@ -1,26 +1,17 @@
-package ru.eninja.piaps.domain;
+package ru.eninja.piaps.domain.impl;
+
+import ru.eninja.piaps.domain.GeneratedValueEntity;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "`student`")
-public class Student {
-    private Integer id;
+public class Student extends GeneratedValueEntity<Integer> {
     private String firstName;
     private String lastName;
     private Date birthDate;
     private Group groupByGroupId;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "first_name", nullable = false)
@@ -59,7 +50,7 @@ public class Student {
 
         Student student = (Student) o;
 
-        if (id != null ? !id.equals(student.id) : student.id != null) return false;
+        if (getId() != null ? !getId().equals(student.getId()) : student.getId() != null) return false;
         if (firstName != null ? !firstName.equals(student.firstName) : student.firstName != null) return false;
         if (lastName != null ? !lastName.equals(student.lastName) : student.lastName != null) return false;
         if (birthDate != null ? !birthDate.equals(student.birthDate) : student.birthDate != null) return false;
@@ -69,7 +60,7 @@ public class Student {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);

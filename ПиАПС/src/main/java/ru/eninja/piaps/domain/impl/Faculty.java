@@ -1,24 +1,16 @@
-package ru.eninja.piaps.domain;
+package ru.eninja.piaps.domain.impl;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import ru.eninja.piaps.domain.GeneratedValueEntity;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "`faculty`")
-public class Faculty {
-    private Integer id;
+public class Faculty extends GeneratedValueEntity<Integer> {
     private String name;
     private Collection<Specialty> specialtiesById;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "name", nullable = false, length = 45)
@@ -37,7 +29,7 @@ public class Faculty {
 
         Faculty faculty = (Faculty) o;
 
-        if (id != null ? !id.equals(faculty.id) : faculty.id != null) return false;
+        if (getId() != null ? !getId().equals(faculty.getId()) : faculty.getId() != null) return false;
         if (name != null ? !name.equals(faculty.name) : faculty.name != null) return false;
 
         return true;
@@ -45,11 +37,12 @@ public class Faculty {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "facultyByFacultyId")
     public Collection<Specialty> getSpecialtiesById() {
         return specialtiesById;

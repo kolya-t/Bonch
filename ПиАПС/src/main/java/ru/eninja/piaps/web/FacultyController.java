@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.eninja.piaps.dao.FacultyDao;
-import ru.eninja.piaps.domain.Faculty;
+import ru.eninja.piaps.domain.impl.Faculty;
 import ru.eninja.piaps.util.specifications.Filter;
 
 import java.util.LinkedHashMap;
@@ -49,20 +49,20 @@ public class FacultyController {
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "faculties/table";
+        return "faculties/facultiesTable";
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String showFacultiesTable(Model model, @SortDefault("id") Pageable pageable) {
         Page<Faculty> page = facultyDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "faculties/table";
+        return "faculties/facultiesTable";
     }
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     public String showFacultiesTree(Model model, Pageable pageable) {
         Page<Faculty> page = facultyDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "faculties/tree";
+        return "faculties/facultiesTree";
     }
 }

@@ -1,4 +1,7 @@
-package ru.eninja.piaps.domain;
+package ru.eninja.piaps.domain.impl;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import ru.eninja.piaps.domain.NonGeneratedValueEntity;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -6,21 +9,10 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "`group`")
-public class Group {
-    private String id;
+public class Group extends NonGeneratedValueEntity<String> {
     private Integer course;
     private Specialty specialtyBySpecialtyId;
     private Collection<Student> studentsById;
-
-    @Id
-    @Column(name = "id", nullable = false, length = 45)
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "course", nullable = false)
@@ -39,7 +31,7 @@ public class Group {
 
         Group group = (Group) o;
 
-        if (id != null ? !id.equals(group.id) : group.id != null) return false;
+        if (getId() != null ? !getId().equals(group.getId()) : group.getId() != null) return false;
         if (course != null ? !course.equals(group.course) : group.course != null) return false;
 
         return true;
@@ -47,7 +39,7 @@ public class Group {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (course != null ? course.hashCode() : 0);
         return result;
     }
@@ -62,6 +54,7 @@ public class Group {
         this.specialtyBySpecialtyId = specialtyBySpecialtyId;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "groupByGroupId")
     public Collection<Student> getStudentsById() {
         return studentsById;
