@@ -1,17 +1,19 @@
 package ru.eninja.piaps.config;
 
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import ru.eninja.piaps.config.spring.ApplicationContextConfig;
 import ru.eninja.piaps.config.spring.PersistenceConfig;
 import ru.eninja.piaps.config.spring.ThymeleafConfig;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.EnumSet;
 import java.util.Properties;
 
 /**
@@ -46,5 +48,15 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
         dispatcherServlet.setLoadOnStartup(1);
         dispatcherServlet.addMapping("/");
         dispatcherServlet.setInitParameter("spring.profiles.active", springActiveProfiles);
+
+        CharacterEncodingFilter charsetFilter = new CharacterEncodingFilter("UTF-8", true);
+        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter", charsetFilter);
+        encodingFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
+        FilterRegistration.Dynamic hiddenHttpMethodFilter = servletContext.addFilter("hiddenHttpMethodFilter",
+                new HiddenHttpMethodFilter());
+        hiddenHttpMethodFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
+        servletContext.addListener(new ContextLoaderListener(rootContext));
     }
 }
