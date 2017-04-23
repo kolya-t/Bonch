@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.eninja.piaps.dao.FacultyDao;
+import ru.eninja.piaps.dao.GroupDao;
+import ru.eninja.piaps.dao.SpecialtyDao;
 import ru.eninja.piaps.dao.StudentDao;
-import ru.eninja.piaps.domain.Student;
+import ru.eninja.piaps.domain.impl.Faculty;
+import ru.eninja.piaps.domain.impl.Specialty;
+import ru.eninja.piaps.domain.impl.Student;
 import ru.eninja.piaps.util.specifications.Filter;
 
 import java.util.LinkedHashMap;
@@ -36,10 +41,16 @@ public class StudentController {
 
 
     private final StudentDao studentDao;
+    private final FacultyDao facultyDao;
+    private final SpecialtyDao specialtyDao;
+    private final GroupDao groupDao;
 
     @Autowired
-    public StudentController(StudentDao studentDao) {
+    public StudentController(StudentDao studentDao, FacultyDao facultyDao, SpecialtyDao specialtyDao, GroupDao groupDao) {
         this.studentDao = studentDao;
+        this.facultyDao = facultyDao;
+        this.specialtyDao = specialtyDao;
+        this.groupDao = groupDao;
     }
 
     @SuppressWarnings("unchecked")
@@ -57,19 +68,57 @@ public class StudentController {
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "students/table";
+        return "students/studentsTable";
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getAllStudents(Model model, @SortDefault("lastName") Pageable pageable) {
+    public String getAllStudents(Model model, @SortDefault("id") Pageable pageable) {
         Page<Student> page = studentDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "students/table";
+        return "students/studentsTable";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String getStudent(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("student", studentDao.findOne(id));
-        return "students/student";
+        return "students/studentDetails";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public String initUpdateStudentForm(Model model, @PathVariable("id") Integer id) {
+        Student student = studentDao.findOne(id);
+        Specialty currentSpecialty = student.getGroupByGroupId().getSpecialtyBySpecialtyId();
+        Faculty currentFaculty = currentSpecialty.getFacultyByFacultyId();
+
+        model.addAttribute("student", student);
+        model.addAttribute("faculties", facultyDao.findAll());
+        model.addAttribute("specialties", currentFaculty.getSpecialtiesById());
+        model.addAttribute("groups", currentSpecialty.getGroupsById());
+        return "students/createOrUpdateStudentForm";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.PUT)
+    public String processUpdateStudentForm(Student student, @PathVariable("id") Integer id) {
+        studentDao.save(student);
+        return "redirect:/students";
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    public String processDeleteStudentForm(@PathVariable("id") Integer id) {
+        studentDao.delete(id);
+        return "redirect:/students";
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String initCreateStudentForm(Model model) {
+        model.addAttribute("student", new Student());
+        model.addAttribute("faculties", facultyDao.findAll());
+        return "students/createOrUpdateStudentForm";
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String processCreateStudentForm(Student student) {
+        student = studentDao.save(student);
+        return "redirect:/students";
     }
 }
