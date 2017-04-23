@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.eninja.piaps.dao.SpecialtyDao;
-import ru.eninja.piaps.domain.Specialty;
+import ru.eninja.piaps.domain.impl.Specialty;
 import ru.eninja.piaps.util.specifications.Filter;
 
 import java.util.LinkedHashMap;
@@ -50,13 +50,13 @@ public class SpecialtyController {
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "specialties/table";
+        return "specialties/specialtiesTable";
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String showSpecialtyTable(Model model, @SortDefault("id") Pageable pageable) {
         Page<Specialty> page = specialtyDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "specialties/table";
+        return "specialties/specialtiesTable";
     }
 }

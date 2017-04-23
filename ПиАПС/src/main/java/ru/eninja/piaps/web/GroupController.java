@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.eninja.piaps.dao.GroupDao;
-import ru.eninja.piaps.domain.Group;
+import ru.eninja.piaps.domain.impl.Group;
 import ru.eninja.piaps.util.specifications.Filter;
 
 import java.util.LinkedHashMap;
@@ -52,13 +52,13 @@ public class GroupController {
         model.addAttribute("filterFields", filterFields);
         model.addAttribute("filterWord", filterWord);
 
-        return "groups/table";
+        return "groups/groupsTable";
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String showGroupsTable(Model model, @SortDefault("id") Pageable pageable) {
         Page<Group> page = groupDao.findAll(pageable);
         model.addAttribute("page", page);
-        return "groups/table";
+        return "groups/groupsTable";
     }
 }
