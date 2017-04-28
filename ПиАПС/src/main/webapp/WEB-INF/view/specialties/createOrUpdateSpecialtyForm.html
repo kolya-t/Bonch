@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="specialty" type="ru.eninja.piaps.domain.impl.Specialty"*/-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Редактирование специальности</title>
+    <link rel="stylesheet" href="../../../static/node_modules/bootstrap/dist/css/bootstrap.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="../../../static/node_modules/bootstrap-select/dist/css/bootstrap-select.css"
+          th:href="@{/css/bootstrap-select.min.css}"/>
+</head>
+<body>
+<div th:replace="~{_navbar :: navbar}"></div>
+<div class="container" style="margin-top: 70px;">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel" th:classappend="${specialty.new} ? 'panel-primary' : 'panel-warning'">
+                <div class="panel-heading">
+                    <h3 class="panel-title"
+                        th:text="${specialty.new ? 'Добавление новой специальности' : 'Редактирование специальности'}">
+                        Редактирование специальности
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" th:object="${specialty}" th:method="${specialty.new} ? post : put"
+                          th:action="@{${#httpServletRequest.servletPath}}">
+                        <div class="form-group">
+                            <input th:field="*{id}" type="text" placeholder="Номер специальности"
+                                   class="form-control" th:readonly="${!specialty.new}" th:autofocus="${specialty.new}"/>
+                        </div>
+                        <div class="form-group">
+                            <input th:field="*{name}" type="text" placeholder="Название специальности"
+                                   class="form-control" required="required" th:autofocus="${!specialty.new}"/>
+                        </div>
+                        <div class="form-group">
+                            <select id="faculty" class="form-control" required="required"
+                                    th:field="*{facultyByFacultyId}">
+                                <!--/*@thymesVar id="faculties" type="java.util.List<ru.eninja.piaps.domain.impl.Faculty>"*/-->
+                                <option th:each="f : ${faculties}" th:value="${f.id}" th:text="${f.name}">ИКСС</option>
+                            </select>
+                        </div>
+
+                        <input type="submit" class="btn btn-lg btn-block"
+                               th:classappend="${specialty.new} ? 'btn-primary' : 'btn-warning'"
+                               value="Редактировать" th:value="${specialty.new ? 'Добавить' : 'Изменить'}"/>
+                    </form>
+                </div>
+            </div>
+            <!--<div th:replace="_alerts :: success"></div>-->
+            <!--<div th:replace="_alerts :: error"></div>-->
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../../static/node_modules/jquery/dist/jquery.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../../../static/node_modules/bootstrap/dist/js/bootstrap.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../../static/node_modules/bootstrap-select/dist/js/bootstrap-select.js"
+        th:src="@{/js/bootstrap-select.min.js}"></script>
+</html>

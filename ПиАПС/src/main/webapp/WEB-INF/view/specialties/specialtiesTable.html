@@ -15,6 +15,7 @@
           th:href="@{/css/bootstrap-select.min.css}"/>
 </head>
 <body>
+<div th:replace="~{_navbar :: navbar}"></div>
 <div class="container">
     <h1>Список специальностей</h1>
     <div class="panel panel-default">
@@ -41,9 +42,14 @@
                 </button>
             </form>
         </div>
+        <div class="panel-footer pull-right">
+            <a href="createOrUpdateSpecialtyForm.html" th:href="@{/specialties/new}">
+                <i class="glyphicon glyphicon-plus"></i> Добавить специальность
+            </a>
+        </div>
     </div>
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover table-condensed">
         <thead>
         <tr>
             <th th:each="field : ${T(ru.eninja.piaps.web.SpecialtyController).FIELD_TO_NAME_MAP}">
@@ -59,18 +65,23 @@
             <td th:text="${specialty.name}">Программная инженерия</td>
             <td th:text="${specialty.facultyByFacultyId.name}">ИКСС</td>
             <td class="text-right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-xs btn-default" href="#">
+                <form th:action="@{/specialties/{id}/delete(id=${specialty.id})}" th:method="delete">
+                    <a class="btn btn-xs btn-default" href="specialtyDetails.html"
+                       th:href="@{/specialties/{id}/(id=${specialty.id})}">
+                        <span class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Просмотреть</span>
+                    </a>
+                    <div class="btn-group">
+                        <a type="button" class="btn btn-xs btn-default" href="createOrUpdateSpecialtyForm.html"
+                           th:href="@{/specialties/{id}/edit(id=${specialty.id})}">
                         <span class="text-warning">
                             <i class="glyphicon glyphicon-pencil"></i> Изменить
                         </span>
-                    </button>
-                    <button type="button" class="btn btn-xs btn-default" href="#">
-                        <span class="text-danger">
-                            <i class="glyphicon glyphicon-remove"></i> Удалить
-                        </span>
-                    </button>
-                </div>
+                        </a>
+                        <button type="submit" class="btn btn-xs btn-default" href="#">
+                            <span class="text-danger"><i class="glyphicon glyphicon-remove"></i> Удалить</span>
+                        </button>
+                    </div>
+                </form>
             </td>
         </tr>
         </tbody>

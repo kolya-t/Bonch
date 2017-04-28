@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,5 +65,42 @@ public class FacultyController {
         Page<Faculty> page = facultyDao.findAll(pageable);
         model.addAttribute("page", page);
         return "faculties/facultiesTree";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String showFaculty(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("faculty", facultyDao.findOne(id));
+        return "faculties/facultyDetails";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public String initUpdateFacultyForm(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("faculty", facultyDao.findOne(id));
+        return "faculties/createOrUpdateFacultyForm";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.PUT)
+    public String processUpdateFacultyForm(Faculty faculty, @PathVariable("id") Integer id) {
+        faculty.setId(id);
+        facultyDao.save(faculty);
+        return "redirect:/faculties";
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    public String processDeleteFacultyForm(@PathVariable("id") Integer id) {
+        facultyDao.delete(id);
+        return "redirect:/faculties";
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String initCreateFacultyForm(Model model) {
+        model.addAttribute("faculty", new Faculty());
+        return "faculties/createOrUpdateFacultyForm";
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String processCreateFacultyForm(Faculty faculty) {
+        facultyDao.save(faculty);
+        return "redirect:/faculties";
     }
 }

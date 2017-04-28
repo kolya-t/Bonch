@@ -1,16 +1,28 @@
 package ru.eninja.piaps.domain.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ru.eninja.piaps.domain.GeneratedValueEntity;
+import ru.eninja.piaps.domain.Newable;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "`faculty`")
-public class Faculty extends GeneratedValueEntity<Integer> {
+public class Faculty implements Newable {
+
+    private Integer id;
     private String name;
     private Collection<Specialty> specialtiesById;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "name", nullable = false, length = 45)
@@ -50,5 +62,11 @@ public class Faculty extends GeneratedValueEntity<Integer> {
 
     public void setSpecialtiesById(Collection<Specialty> specialtiesById) {
         this.specialtiesById = specialtiesById;
+    }
+
+    @Override
+    @Transient
+    public boolean isNew() {
+        return id == null;
     }
 }

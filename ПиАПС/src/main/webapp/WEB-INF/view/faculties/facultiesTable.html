@@ -15,6 +15,7 @@
           th:href="@{/css/bootstrap-select.min.css}"/>
 </head>
 <body>
+<div th:replace="~{_navbar :: navbar}"></div>
 <div class="container">
     <h1>Список факультетов</h1>
     <div class="panel panel-default">
@@ -41,9 +42,14 @@
                 </button>
             </form>
         </div>
+        <div class="panel-footer pull-right">
+            <a href="createOrUpdateFacultyForm.html" th:href="@{/faculties/new}">
+                <i class="glyphicon glyphicon-plus"></i> Добавить факультет
+            </a>
+        </div>
     </div>
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover table-condensed">
         <thead>
         <tr>
             <th th:each="field : ${T(ru.eninja.piaps.web.FacultyController).FIELD_TO_NAME_MAP}">
@@ -55,21 +61,26 @@
         <tbody>
         <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<ru.eninja.piaps.domain.impl.Faculty>"*/-->
         <tr th:each="faculty : ${page}">
-            <td th:text="${faculty.id}">3</td>
-            <td th:text="${faculty.name}">ГФ</td>
+            <td th:text="${faculty.id}">123</td>
+            <td th:text="${faculty.name}">ИКСС</td>
             <td class="text-right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-xs btn-default" href="#">
+                <form th:action="@{/faculties/{id}/delete(id=${faculty.id})}" th:method="delete">
+                    <a class="btn btn-xs btn-default" href="facultyDetails.html"
+                       th:href="@{/faculties/{id}/(id=${faculty.id})}">
+                        <span class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Просмотреть</span>
+                    </a>
+                    <div class="btn-group">
+                        <a type="button" class="btn btn-xs btn-default" href="createOrUpdateFacultyForm.html"
+                           th:href="@{/faculties/{id}/edit(id=${faculty.id})}">
                         <span class="text-warning">
                             <i class="glyphicon glyphicon-pencil"></i> Изменить
                         </span>
-                    </button>
-                    <button type="button" class="btn btn-xs btn-default" href="#">
-                        <span class="text-danger">
-                            <i class="glyphicon glyphicon-remove"></i> Удалить
-                        </span>
-                    </button>
-                </div>
+                        </a>
+                        <button type="submit" class="btn btn-xs btn-default" href="#">
+                            <span class="text-danger"><i class="glyphicon glyphicon-remove"></i> Удалить</span>
+                        </button>
+                    </div>
+                </form>
             </td>
         </tr>
         </tbody>

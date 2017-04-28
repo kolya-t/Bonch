@@ -1,17 +1,29 @@
 package ru.eninja.piaps.domain.impl;
 
-import ru.eninja.piaps.domain.GeneratedValueEntity;
+import ru.eninja.piaps.domain.Newable;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "`student`")
-public class Student extends GeneratedValueEntity<Integer> {
+public class Student implements Newable {
+
+    private Integer id;
     private String firstName;
     private String lastName;
     private Date birthDate;
     private Group groupByGroupId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "first_name", nullable = false)
@@ -75,5 +87,11 @@ public class Student extends GeneratedValueEntity<Integer> {
 
     public void setGroupByGroupId(Group groupByGroupId) {
         this.groupByGroupId = groupByGroupId;
+    }
+
+    @Override
+    @Transient
+    public boolean isNew() {
+        return id == null;
     }
 }

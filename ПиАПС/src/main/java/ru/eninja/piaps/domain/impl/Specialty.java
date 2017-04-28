@@ -1,17 +1,28 @@
 package ru.eninja.piaps.domain.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ru.eninja.piaps.domain.NonGeneratedValueEntity;
+import ru.eninja.piaps.domain.Newable;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "`specialty`")
-public class Specialty extends NonGeneratedValueEntity<String> {
+public class Specialty implements Newable {
+
+    private String id;
     private String name;
     private Collection<Group> groupsById;
     private Faculty facultyByFacultyId;
+
+    @Id
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "name", nullable = false)
@@ -61,5 +72,11 @@ public class Specialty extends NonGeneratedValueEntity<String> {
 
     public void setFacultyByFacultyId(Faculty facultyByFacultyId) {
         this.facultyByFacultyId = facultyByFacultyId;
+    }
+
+    @Override
+    @Transient
+    public boolean isNew() {
+        return id == null;
     }
 }

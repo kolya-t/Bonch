@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="classActiveFaculties" type="java.lang.String"*/-->
+<!--/*@thymesVar id="classActiveSpecialties" type="java.lang.String"*/-->
+<!--/*@thymesVar id="classActiveGroups" type="java.lang.String"*/-->
+<!--/*@thymesVar id="classActiveStudents" type="java.lang.String"*/-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Навигационная панель</title>
+    <link rel="stylesheet" href="../../static/node_modules/bootstrap/dist/css/bootstrap.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/style.css"
+          th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="../../static/node_modules/bootstrap-select/dist/css/bootstrap-select.css"
+          th:href="@{/css/bootstrap-select.min.css}"/>
+</head>
+<body>
+<nav class="navbar navbar-default" th:fragment="navbar">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li class="dropdown" th:classappend="${classActiveFaculties}">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Факультеты
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="faculties/facultiesTable.html" th:href="@{/faculties}">Таблица</a></li>
+                    <li><a href="faculties/facultiesTree.html" th:href="@{/faculties/tree}">Дерево</a></li>
+                </ul>
+            </li>
+
+            <li th:class="${classActiveSpecialties}">
+                <a href="specialties/specialtiesTable.html" th:href="@{/specialties}">Специальности</a>
+            </li>
+            <li th:class="${classActiveGroups}">
+                <a href="groups/groupsTable.html" th:href="@{/groups}">Группы</a>
+            </li>
+            <li th:class="${classActiveStudents}">
+                <a href="students/studentsTable.html" th:href="@{/students}">Студенты</a>
+            </li>
+        </ul>
+
+        <!--<ul class="nav navbar-nav navbar-right">-->
+            <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+            <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+        <!--</ul>-->
+    </div>
+</nav>
+</body>
+<script src="../../static/node_modules/jquery/dist/jquery.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../../static/node_modules/bootstrap/dist/js/bootstrap.js" th:src="@{/js/bootstrap.min.js}"></script>
+</html>

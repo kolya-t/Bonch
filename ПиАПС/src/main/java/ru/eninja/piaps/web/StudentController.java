@@ -35,7 +35,7 @@ public class StudentController {
         put("birthDate", "Дата рождения");
         put("groupByGroupId.id", "Группа");
         put("groupByGroupId.course", "Курс");
-        put("groupByGroupId.specialtyBySpecialtyId.id", "Специальность");
+        put("groupByGroupId.specialtyBySpecialtyId.id", "№ специальности");
         put("groupByGroupId.specialtyBySpecialtyId.facultyByFacultyId.name", "Факультет");
     }};
 
@@ -79,7 +79,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String getStudent(Model model, @PathVariable("id") Integer id) {
+    public String showStudent(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("student", studentDao.findOne(id));
         return "students/studentDetails";
     }
@@ -99,6 +99,7 @@ public class StudentController {
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.PUT)
     public String processUpdateStudentForm(Student student, @PathVariable("id") Integer id) {
+        student.setId(id);
         studentDao.save(student);
         return "redirect:/students";
     }
@@ -118,7 +119,7 @@ public class StudentController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String processCreateStudentForm(Student student) {
-        student = studentDao.save(student);
+        studentDao.save(student);
         return "redirect:/students";
     }
 }
