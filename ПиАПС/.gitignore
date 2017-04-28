@@ -1,5 +1,0 @@
-*.iml
-target/
-.idea/
-src/main/webapp/static/node_modules/
-src/main/webapp/static/etc/
